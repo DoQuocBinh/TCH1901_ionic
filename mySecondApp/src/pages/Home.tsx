@@ -1,10 +1,14 @@
-import { IonButton, IonContent, IonHeader, IonInput, IonItem, 
+import { IonButton, IonContent, IonHeader, IonIcon, IonInput, IonItem, 
   IonLabel, IonPage, IonRange, IonSlide, IonText, IonTitle,
    IonToast, IonToolbar } from '@ionic/react';
 import { useState } from 'react';
+import {fingerPrintSharp} from 'ionicons/icons'
 
 const Home: React.FC = () => {
   const [showMessage,setShowMessage] = useState(false);
+  const [name,setName]= useState('');
+  const [volum,setVolum] = useState(40)
+
   function clickHandler(){
     setShowMessage(true)
     setTimeout(()=>{
@@ -26,7 +30,7 @@ const Home: React.FC = () => {
         </IonHeader>
         <IonItem>
           <IonLabel position="stacked">Name</IonLabel>
-          <IonInput></IonInput>
+          <IonInput onIonChange={(event)=>setName(event.detail.value!)}></IonInput>
         </IonItem>
         <IonItem >
           <IonLabel color="danger" slot="end" className="ion-text-wrap">
@@ -34,17 +38,19 @@ const Home: React.FC = () => {
             to fit on one line in the item.</IonLabel>
         </IonItem>
         <IonItem>
-            <IonRange min={0} max={100}>
+            <IonRange onIonChange={event=>setVolum(event.detail.value as number)} value={volum} min={0} max={100}>
               <IonLabel slot="start">0</IonLabel>
               <IonLabel slot="end">200</IonLabel>
             </IonRange>
         </IonItem>
         <IonButton color="secondary" 
           onClick={clickHandler}
-          expand="block">Ok</IonButton>
+          expand="block">
+            <IonIcon icon={fingerPrintSharp} size="large" slot="icon-only"></IonIcon>
+          </IonButton>
         <IonToast
           isOpen = {showMessage}
-          message = "Hello world"
+          message = {'hello ' + name + " volum " + volum}
           position="top"
         />
       </IonContent>
