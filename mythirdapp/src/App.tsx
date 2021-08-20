@@ -22,6 +22,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import Register from './pages/Register';
 
 const App: React.FC = () => (
   <IonApp>
@@ -34,13 +35,16 @@ const App: React.FC = () => (
           <Route exact path="/">
             <Redirect to="/home" />
           </Route>
+          <Route exact path="/register">
+            <Register/>
+          </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
-          <IonTabButton tab="home" href="/home">
+          <IonTabButton tab="homeTab" href="/home">
             <IonIcon icon={homeIcon}></IonIcon>
             <IonLabel>Home</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="registe">
+          <IonTabButton tab="registerTab" href="/register">
             <IonIcon icon={personAddShapeIcon}></IonIcon>
             Register</IonTabButton>
         </IonTabBar>
