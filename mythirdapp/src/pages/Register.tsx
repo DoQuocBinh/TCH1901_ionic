@@ -1,5 +1,6 @@
 import { IonButton, IonContent, IonDatetime, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonRadio, IonRadioGroup, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
 import { useState } from 'react';
+import {insertCustomer} from '../databaseHandler'
 
 const Register: React.FC = () => {
   const [name, setName] = useState('')
@@ -9,6 +10,15 @@ const Register: React.FC = () => {
   const [gender, setGender] = useState('')
   function formatVNDate(isoString: string) {
     return new Date(isoString).toLocaleDateString("vi-VN");
+  }
+  async function clickHandler(){
+    const newCus = {name:name,country:country,languages:languages,
+            dateOfBirth:dateOfBirth,gender:gender}
+    // insertCustomer(newCus).then(()=>{
+    //   alert('done');
+    // })
+    await insertCustomer(newCus);
+    alert('done');
   }
   return (
     <IonPage>
@@ -55,7 +65,7 @@ const Register: React.FC = () => {
             </IonItem>
           </IonRadioGroup>
         </IonItem>
-        <IonButton expand="block">Register</IonButton>
+        <IonButton onClick={clickHandler} expand="block">Register</IonButton>
       </IonContent>
 
     </IonPage>
