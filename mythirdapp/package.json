@@ -1,11 +1,10 @@
 {
-  "name": "mySecondApp",
+  "name": "mythirdapp",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@capacitor/android": "3.1.2",
     "@capacitor/app": "1.0.2",
-    "@capacitor/core": "3.1.2",
+    "@capacitor/core": "3.2.0",
     "@capacitor/haptics": "1.0.2",
     "@capacitor/keyboard": "1.0.2",
     "@capacitor/status-bar": "1.0.2",
@@ -66,7 +65,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "3.1.2"
+    "@capacitor/cli": "3.2.0"
   },
   "description": "An Ionic project"
 }

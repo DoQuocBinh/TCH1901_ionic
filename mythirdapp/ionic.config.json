@@ -1,0 +1,7 @@
+{
+  "name": "mythirdapp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
