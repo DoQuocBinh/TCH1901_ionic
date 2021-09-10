@@ -6,6 +6,12 @@ const database_name = 'TCH1901_DB'
 initDB().then(()=>{
     console.log(database_name + " was created!")
 })
+
+export async function deleteCustomer(id:number) {
+    const db = await openDB(database_name,1)
+    await db.delete("customers",id)
+}
+
 export async function updateCustomer(customer:Customer) {
     const db = await openDB(database_name,1)
     var productDB = await db.get("customers",customer.id!) as Customer

@@ -1,7 +1,8 @@
-import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonRadio, IonRadioGroup, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRadio, IonRadioGroup, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
+import { trash } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import {getCustomerById, updateCustomer} from '../databaseHandler'
+import { useHistory, useParams } from 'react-router';
+import {deleteCustomer, getCustomerById, updateCustomer} from '../databaseHandler'
 import { Customer } from '../models';
 
 interface IdParam{
@@ -17,6 +18,7 @@ const Detail: React.FC = () => {
 
 
   const {id} = useParams<IdParam>()
+  const history = useHistory()
 
   function formatVNDate(isoString: string) {
     return new Date(isoString).toLocaleDateString("vi-VN");
@@ -35,6 +37,12 @@ const Detail: React.FC = () => {
     setGender(resultFromDB.gender)
     setLanguages(resultFromDB.languages)
   }
+  async function handleDelete() {
+    await deleteCustomer(Number.parseInt(id))
+    alert("Deletion done")
+    history.goBack();
+
+  }
   useEffect(()=>{
     fetchData();
   },[])
@@ -45,6 +53,9 @@ const Detail: React.FC = () => {
         <IonButtons slot="start">
           <IonBackButton />
         </IonButtons>
+        <IonButton onClick={handleDelete} color="danger" slot="end">
+            <IonIcon slot="icon-only" icon={trash}></IonIcon>
+        </IonButton>
           <IonTitle>Detail of {id}</IonTitle>
         </IonToolbar>
       </IonHeader>
