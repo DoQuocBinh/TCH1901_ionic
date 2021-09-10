@@ -6,6 +6,17 @@ const database_name = 'TCH1901_DB'
 initDB().then(()=>{
     console.log(database_name + " was created!")
 })
+export async function updateCustomer(customer:Customer) {
+    const db = await openDB(database_name,1)
+    var productDB = await db.get("customers",customer.id!) as Customer
+    productDB.name = customer.name
+    productDB.country = customer.country
+    productDB.gender= customer.gender
+    productDB.languages = customer.languages
+    productDB.dateOfBirth = customer.dateOfBirth
+
+    await db.put("customers",productDB);
+}
 
 export async function getCustomerById(id:number) {
     const db = await openDB(database_name,1);

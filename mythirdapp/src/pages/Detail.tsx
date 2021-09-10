@@ -1,7 +1,7 @@
-import { IonButton, IonContent, IonDatetime, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonRadio, IonRadioGroup, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonRadio, IonRadioGroup, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import {getCustomerById} from '../databaseHandler'
+import {getCustomerById, updateCustomer} from '../databaseHandler'
 import { Customer } from '../models';
 
 interface IdParam{
@@ -15,14 +15,17 @@ const Detail: React.FC = () => {
   const [dateOfBirth, setDateOfBirth] = useState(new Date().toISOString())
   const [gender, setGender] = useState('')
 
+
   const {id} = useParams<IdParam>()
 
   function formatVNDate(isoString: string) {
     return new Date(isoString).toLocaleDateString("vi-VN");
   }
   async function clickHandler(){
-    const newCus = {name:name,country:country,languages:languages,
+    const updateCus = {id: Number.parseInt(id), name:name,country:country,languages:languages,
             dateOfBirth:dateOfBirth,gender:gender}
+    await updateCustomer(updateCus)
+    alert('update done!')
   }
   async function fetchData() {
     const resultFromDB = await getCustomerById(Number.parseInt(id)) as Customer;
@@ -34,11 +37,14 @@ const Detail: React.FC = () => {
   }
   useEffect(()=>{
     fetchData();
-  })
+  },[])
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
+        <IonButtons slot="start">
+          <IonBackButton />
+        </IonButtons>
           <IonTitle>Detail of {id}</IonTitle>
         </IonToolbar>
       </IonHeader>

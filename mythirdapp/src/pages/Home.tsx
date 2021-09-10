@@ -20,7 +20,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  })
+  },[])
   return (
     <IonPage>
       <IonHeader>
