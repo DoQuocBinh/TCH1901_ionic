@@ -23,6 +23,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import Register from './pages/Register';
+import Detail from './pages/Detail';
 
 const App: React.FC = () => (
   <IonApp>
@@ -37,6 +38,9 @@ const App: React.FC = () => (
           </Route>
           <Route exact path="/register">
             <Register/>
+          </Route>
+          <Route exact path="/Detail/:id">
+            <Detail/>
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">

@@ -7,6 +7,11 @@ initDB().then(()=>{
     console.log(database_name + " was created!")
 })
 
+export async function getCustomerById(id:number) {
+    const db = await openDB(database_name,1);
+    return await db.get("customers",id)
+}
+
 export async function getAllCustomers() {
     const db = await openDB(database_name,1);
     return await db.transaction("customers").objectStore("customers").getAll();

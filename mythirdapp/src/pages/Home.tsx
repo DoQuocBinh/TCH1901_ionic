@@ -1,15 +1,24 @@
-import { IonContent, IonHeader, IonItem, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { RefresherEventDetail } from '@ionic/core';
+import { IonContent, IonHeader, IonItem, IonList, IonPage, IonRefresher, IonRefresherContent, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { getAllCustomers } from '../databaseHandler';
 import { Customer } from '../models';
 
 const Home: React.FC = () => {
-  const [allCustomers,setAllCustomers]= useState<Customer[]>([]);
-  async function fetchData(){
+  const [allCustomers, setAllCustomers] = useState<Customer[]>([]);
+  async function fetchData() {
     const resultFromDB = await getAllCustomers();
     setAllCustomers(resultFromDB);
   }
-  useEffect(()=>{
+
+  function doRefresh(event: CustomEvent<RefresherEventDetail>) {
+    fetchData();
+    setTimeout(() => {
+      event.detail.complete();
+    }, 1500);
+  }
+
+  useEffect(() => {
     fetchData();
   })
   return (
@@ -20,13 +29,17 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-          {allCustomers &&
-            <IonList>
-              {allCustomers.map(c=>
-                <IonItem button key={c.id}>{c.name}</IonItem>
-                )}
-            </IonList>
-          }
+        <IonRefresher slot="fixed" onIonRefresh={doRefresh}>
+          <IonRefresherContent>
+          </IonRefresherContent>
+        </IonRefresher>
+        {allCustomers &&
+          <IonList>
+            {allCustomers.map(c =>
+              <IonItem routerLink={'/Detail/' + c.id} button key={c.id}>{c.name}</IonItem>
+            )}
+          </IonList>
+        }
       </IonContent>
     </IonPage>
   );

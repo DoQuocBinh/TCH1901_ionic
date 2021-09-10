@@ -1,47 +1,62 @@
 import { IonButton, IonContent, IonDatetime, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonRadio, IonRadioGroup, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
-import { useState } from 'react';
-import {insertCustomer} from '../databaseHandler'
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import {getCustomerById} from '../databaseHandler'
+import { Customer } from '../models';
 
-const Register: React.FC = () => {
+interface IdParam{
+  id: string
+}
+
+const Detail: React.FC = () => {
   const [name, setName] = useState('')
   const [country, setCountry] = useState('')
   const [languages, setLanguages] = useState<string[]>([])
   const [dateOfBirth, setDateOfBirth] = useState(new Date().toISOString())
   const [gender, setGender] = useState('')
+
+  const {id} = useParams<IdParam>()
+
   function formatVNDate(isoString: string) {
     return new Date(isoString).toLocaleDateString("vi-VN");
   }
   async function clickHandler(){
     const newCus = {name:name,country:country,languages:languages,
             dateOfBirth:dateOfBirth,gender:gender}
-    // insertCustomer(newCus).then(()=>{
-    //   alert('done');
-    // })
-    await insertCustomer(newCus);
-    //alert('done');
   }
+  async function fetchData() {
+    const resultFromDB = await getCustomerById(Number.parseInt(id)) as Customer;
+    setName(resultFromDB.name);
+    setCountry(resultFromDB.country);
+    setDateOfBirth(resultFromDB.dateOfBirth)
+    setGender(resultFromDB.gender)
+    setLanguages(resultFromDB.languages)
+  }
+  useEffect(()=>{
+    fetchData();
+  })
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Register</IonTitle>
+          <IonTitle>Detail of {id}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <IonItem>
           <IonLabel position="stacked">Name</IonLabel>
-          <IonInput onIonChange={e => setName(e.detail.value!)}></IonInput>
+          <IonInput value={name} onIonChange={e => setName(e.detail.value!)}></IonInput>
         </IonItem>
         <IonItem>
           <IonLabel position="stacked">Country</IonLabel>
-          <IonSelect onIonChange={e => setCountry(e.detail.value)}>
+          <IonSelect value={country} onIonChange={e => setCountry(e.detail.value)}>
             <IonSelectOption value="Vietnam">Vietnam</IonSelectOption>
             <IonSelectOption value="Lao">Lao</IonSelectOption>
           </IonSelect>
         </IonItem>
         <IonItem>
           <IonLabel position="stacked">Languages can speak</IonLabel>
-          <IonSelect multiple onIonChange={e => setLanguages(e.detail.value)}>
+          <IonSelect value={languages} multiple onIonChange={e => setLanguages(e.detail.value)}>
             <IonSelectOption value="English">English</IonSelectOption>
             <IonSelectOption value="Vietnamese">Vietnamese</IonSelectOption>
             <IonSelectOption value="Spanish">Spanish</IonSelectOption>
@@ -54,7 +69,7 @@ const Register: React.FC = () => {
         </IonItem>
         <IonItem>
           <IonLabel position="stacked">Gender</IonLabel>
-          <IonRadioGroup onIonChange={e => setGender(e.detail.value)}>
+          <IonRadioGroup value={gender} onIonChange={e => setGender(e.detail.value)}>
             <IonItem lines="none">
               <IonRadio value="Male"></IonRadio>
               <IonLabel><small>Male</small></IonLabel>
@@ -65,11 +80,11 @@ const Register: React.FC = () => {
             </IonItem>
           </IonRadioGroup>
         </IonItem>
-        <IonButton onClick={clickHandler} expand="block">Register</IonButton>
+        <IonButton onClick={clickHandler} expand="block" color="secondary">Update</IonButton>
       </IonContent>
 
     </IonPage>
   );
 };
 
-export default Register;
+export default Detail;
