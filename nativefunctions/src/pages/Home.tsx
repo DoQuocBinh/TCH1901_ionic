@@ -1,5 +1,5 @@
 import { IonButton, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactAudioPlayer from 'react-audio-player';
 
 import './Home.css';
@@ -7,7 +7,7 @@ import './Home.css';
 const Home: React.FC = () => {
   var myPlayer: ReactAudioPlayer | null
   const [pictureURL, setPictureURL] = useState('assets/placeHolder.jpeg')
-  
+
   function selectFileHandle(event: React.ChangeEvent<HTMLInputElement>){
     if(event.target.files != null){
       const fileName = event.target.files[0].name
@@ -17,6 +17,16 @@ const Home: React.FC = () => {
       setPictureURL(picURL);
     }
   }
+
+  useEffect(() => {
+    return () => {
+      if (pictureURL.startsWith("blob")) {
+        URL.revokeObjectURL(pictureURL);
+        console.log("Revoked Url", pictureURL)
+      }
+    }
+  }, [pictureURL])
+  
   return (
     <IonPage>
       <IonHeader>
