@@ -6,12 +6,12 @@ initDB().then(()=>{
     console.log('Init Done!')
 })
 
-async function insertPicture(picInfo:any) {
+export async function insertPicture(picInfo:any) {
     const db = await openDB(dbName, 1)
     await db.put('Pictures',picInfo)
     console.log("One pic inserted!")
 }
-async function  getPics() {
+export async function  getPics() {
     const db = await openDB(dbName, 1)
     return db.getAll("Pictures")
 }
