@@ -1,14 +1,25 @@
-import { IonButton, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonImg, IonItem, IonLabel, IonList, IonPage, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import ReactAudioPlayer from 'react-audio-player';
-import { insertPicture } from '../databaseHandler';
+import { getPics, insertPicture } from '../databaseHandler';
 
 import './Home.css';
+
+interface MyPic{
+  fileName? : string,
+  fileContent? : Blob
+}
 
 const Home: React.FC = () => {
   var myPlayer: ReactAudioPlayer | null
   const [pictureURL, setPictureURL] = useState('assets/placeHolder.jpeg')
   const [fileName, setFileName] = useState('')
+  const [pics, setPics] = useState<MyPic[]>([]);
+
+  async function fetchDataFromDB() {
+    const pics = await getPics()
+    setPics(pics);
+  }
 
   function selectFileHandle(event: React.ChangeEvent<HTMLInputElement>){
     if(event.target.files != null){
@@ -31,6 +42,7 @@ const Home: React.FC = () => {
   }
 
   useEffect(() => {
+    fetchDataFromDB()
     return () => {
       if (pictureURL.startsWith("blob")) {
         URL.revokeObjectURL(pictureURL);
@@ -67,6 +79,18 @@ const Home: React.FC = () => {
             <IonButton onClick={uploadHandler}>Upload</IonButton>
           </IonItem>
         </IonList>
+        {pics && 
+          <IonList>
+            {pics.map((p,i) =>
+              <IonItem key={i}>
+                {p.fileName}
+                <IonThumbnail slot="end">
+                  <IonImg src={URL.createObjectURL(p.fileContent)}></IonImg>
+                </IonThumbnail>
+              </IonItem>
+            )}
+          </IonList>
+        }
       </IonContent>
     </IonPage>
   );
