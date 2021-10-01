@@ -75,7 +75,7 @@ const Home: React.FC = () => {
             <input type="file" onChange={selectFileHandle}></input>
           </IonItem>
           <IonItem>
-            <img src={pictureURL} />
+            <img src={pictureURL} width="200" height="170" />
             <IonButton onClick={uploadHandler}>Upload</IonButton>
           </IonItem>
         </IonList>
