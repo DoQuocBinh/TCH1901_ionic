@@ -23,8 +23,12 @@ const Home: React.FC = () => {
   const [refreshFlag,setRefreshFlag] = useState(false)
 
   async function fetchData() {
-    const result = await getAllPics()
+    const result = await getAllPics() as PicInfo[]
     setPics(result)
+
+    //vd ve search
+    // var result = await getAllPics() as PicInfo[]
+    // setPics(result.filter(p=>p.note=="ipad 2"))
   }
 
   useEffect(() => {
