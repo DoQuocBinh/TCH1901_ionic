@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ReactAudioPlayer from 'react-audio-player';
 import { getPics, insertPicture } from '../databaseHandler';
 
+
 import './Home.css';
 
 interface MyPic{
@@ -41,6 +42,8 @@ const Home: React.FC = () => {
     alert('Insert done!')
   }
 
+  
+
   useEffect(() => {
     fetchDataFromDB()
     return () => {
@@ -78,6 +81,7 @@ const Home: React.FC = () => {
             <img src={pictureURL} width="200" height="170" />
             <IonButton onClick={uploadHandler}>Upload</IonButton>
           </IonItem>
+          
         </IonList>
         {pics && 
           <IonList>
