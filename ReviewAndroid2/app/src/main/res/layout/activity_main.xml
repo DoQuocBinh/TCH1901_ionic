@@ -10,6 +10,9 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:rotation="3"
+        android:rotationX="-19"
+        android:rotationY="-15"
         android:text="Hello World!\nGood day!"
         android:textColor="#9C27B0"
         android:textSize="20sp"
@@ -52,8 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5"
-        />
+        app:layout_constraintGuide_percent="0.5" />
 
     <Button
         android:id="@+id/button2"
